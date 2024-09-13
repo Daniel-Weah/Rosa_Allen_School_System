@@ -1,0 +1,111 @@
+<!-- Incidents Report Analysis Page -->
+ <%- include('layouts/header.ejs') %>
+ <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+ <link rel="stylesheet" href="/css/analysis.css">
+ <body>
+  <%- include('layouts/sidebar.ejs') %>
+  <%- include('layouts/navbar.ejs') %>
+
+  <div class="container-fluid analysis"> 
+   <h2>Incidents Analysis</h2>  
+   <div class="card-trend-container">
+   <div class="card-container p-3 mb-5 rounded">
+    
+<div class="card-parent shadow-lg p-3 mb-5  rounded">
+   <div class="card  shadow-lg" style="background-color: rgb(32, 149, 188);">
+    <div class="card-body">
+      <h5 class="card-title" style="font-size: 15px;text-align: left;">Total Incidents</h5>
+      <h6 class="card-subtitle" style="font-size: 4rem; border: 5px solid #fff;border-radius: 50%;width: fit-content;height: auto;line-height: 125px;padding: 5px; font-weight: bold;">350</h6>
+      <p class="card-text" style="float: right;margin-top: -4rem;margin-right: 5px; font-size: 20px;"><i class="fa-solid fa-arrow-up-right-dots" style="font-size: 30px;"></i><br>Counting..</p>
+      
+    </div>
+  </div>
+</div>
+ 
+  <div class="shadow-lg p-3 mb-5 bg-body rounded" style="padding-top: 10px;">
+  <div class="bg-light ">
+   <h5>Incident Analysis Chart</h5>
+   <div id="chart"></div>
+
+ </div>
+  </div>
+  </div>
+
+  <div class="trend-container shadow-lg p-3 mb-5 rounded">
+   <div class="trend-body">
+    
+<h4>Trending incidents</h4>
+<hr>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+<div class="trend-item-container">
+ <h6>Power Outage in City Center</h6>
+ <p class="card-text">A major power outage has been reported in the downtown area affecting thousands...</p>
+ <p class="incident-date" style="margin-top: -10px;text-align: right;">2 hours ago</p>
+ <a href="#" class="btn btn-primary btn-sm">Read more</a>
+</div>
+   </div>
+  </div>
+
+  </div>
+  </div>
+  <script>
+   // Create the data and options for the chart
+   var options = {
+       chart: {
+           type: 'line',
+           height: 350
+       },
+       series: [{
+           name: '# of incident',
+           data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+       }],
+       stroke: {
+           curve: 'smooth'
+       },
+       title: {
+           text: 'Incident Analysis Report',
+           align: 'left'
+       },
+       xaxis: {
+           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
+       }
+   };
+
+   // Render the chart
+   var chart = new ApexCharts(document.querySelector("#chart"), options);
+   chart.render();
+</script>
+
+  <%- include('layouts/footer.ejs') %>
+ </body>
+ </html>
