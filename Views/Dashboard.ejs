@@ -1,321 +1,134 @@
 <!-- This is the dashboard page -->
-<%- include('layouts/header')%>
 <link rel="stylesheet" href="/css/dashboard.css">
 <title>Dashboard</title>
 </head>
 <body>
-<header>
-  <%- include ('layouts/navbar')%>
-  <%- include ('layouts/sidebar')%>
-</header>
 
-<main>
-  <div id="dashboard-head">
-   <h2>Incidents Report</h2>
-   <div class="mb-3">
-    <input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="Search area">
-   </div>
-  </div>
-  <div id="incident-type-tabs" class="d-flex justify-content-center">
-    <ul class="nav nav-tabs" id="incidentTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">ALL</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="fire-tab" data-bs-toggle="tab" data-bs-target="#fire" type="button" role="tab" aria-controls="fire" aria-selected="false">Fire</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="violence-tab" data-bs-toggle="tab" data-bs-target="#violence" type="button" role="tab" aria-controls="violence" aria-selected="false">Violence</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="theft-tab" data-bs-toggle="tab" data-bs-target="#theft" type="button" role="tab" aria-controls="theft" aria-selected="false">Theft</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="vandalism-tab" data-bs-toggle="tab" data-bs-target="#vandalism" type="button" role="tab" aria-controls="vandalism" aria-selected="false">Vandalism</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab" aria-controls="other" aria-selected="false">Other</button>
-        </li>
-        
-    </ul>
+<!-- Dashboard.ejs -->
+<div class="dashboard-container">
+    <div class="profile-section">
+    </div>
+
+    <h2 style="text-align: center;margin-top: -4pc;">Latest Feeds</h2>
+    <hr>
+    <div class="incidents-section" id="detailed-incident-cards">
+        <% if (detailedIncidents.length > 0) { %>
+            <% detailedIncidents.slice(0, 4).forEach(incident => { %> 
+                <div class="incident-card shadow-lg">
+                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
+                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">loading...</span>
+                          </div>
+                        </div>
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          frameborder="0"
+                          style="border:0; display: none;"
+                          src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
+                          allowfullscreen>
+                        </iframe>
+                      </div>
+                    <h3>Incident: <%= incident.incident_type %></h3>
+                    <p>Location: <%= incident.location %></p>
+                    <p>Time: <%= incident.formatted_time %></p>
+                    <p>Date: <%= incident.formatted_date %></p>
+                    <% if (incident.imageSrcs && incident.imageSrcs.length > 0) { %>
+                        <div class="incident-images">
+                            <% incident.imageSrcs.forEach(src => { %>
+                                <img src="<%= src %>" alt="Incident Image">
+                            <% }) %>
+                        </div>
+                    <% } %>
+                    <p><img style="width: 30px;height: 30px; border-radius: 50%;" src="/images/profile-default.png" alt="profile"><%= incident.pseudo_name %></p> 
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No Latest feeds to show.</p>
+        <% } %>
+    </div>
+    <% if (detailedIncidents.length > 4) { %> 
+        <button class="btn" id="load-more-detailed" style="background-color: teal; color: #fff; margin-top: 2pc;width: 20%;margin: 0 auto;">Load more</button>
+    <% } %> 
+
 </div>
-
-
-<div class="tab-content" id="incidentTabContent">
-    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% allIncidents.forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h6 style="margin-bottom: -5px; text-transform: capitalize;">
-                                            Type: <%= incident.incident_type !== 'fire' && incident.incident_type !== 'violence' && incident.incident_type !== 'theft' && incident.incident_type !== 'vandalism' ? 'Other - ' + incident.incident_type : incident.incident_type %>
-                                        </h6><br>
-                                        <span>
-                                            <img src="data:image/png;base64,<%= incident.profile_picture %>" alt="profile picture" id="card-profile">
-                                        </span>
-                                        <div class="tooltip-wrapper">
-                                            <span style="color: #505050; font-family: 'Ubuntu', sans-serif; font-size: 12px;">
-                                              <%= incident.name %>
-                                            </span>
-                                            <div class="tooltip-box">
-                                              <img src="data:image/png;base64,<%= incident.profile_picture %>" alt="Profile Picture">
-                                              <div id="name"><strong><%= incident.name %></strong></div>
-                                              <div>Description: "<%= incident.description %>"</div>
-                                              <% if (incident.imageSrcs && incident.imageSrcs.length > 0) { %>
-                                                  <% incident.imageSrcs.forEach(imageSrc => { %>
-                                                      <img src="<%= imageSrc %>" alt="Incident Image" class="incident-image" id="images">
-                                                  <% }); %>
-                                              <% } else { %>
-                                                  <p>No images available</p>
-                                              <% } %>
-                                              
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <span style="color: #505050; font-size: 12px;">
-                                            <%= incident.formatted_date %> - <%= incident.formatted_time %>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-
-    <div class="tab-pane fade" id="fire" role="tabpanel" aria-labelledby="fire-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% groupedIncidents.filter(incident => incident.incident_type === 'fire').forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h3 style="margin-bottom: -5px;"><%= incident.incident_count < 10 ? '0' + incident.incident_count : incident.incident_count %></h3>
-                                        <span>Number of Incidents</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-
-    <div class="tab-pane fade" id="violence" role="tabpanel" aria-labelledby="violence-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% groupedIncidents.filter(incident => incident.incident_type === 'violence').forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h3 style="margin-bottom: -5px;"><%= incident.incident_count < 10 ? '0' + incident.incident_count : incident.incident_count %></h3>
-                                        <span>Number of Incidents</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-
-    <div class="tab-pane fade" id="theft" role="tabpanel" aria-labelledby="theft-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% groupedIncidents.filter(incident => incident.incident_type === 'theft').forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h3 style="margin-bottom: -5px;"><%= incident.incident_count < 10 ? '0' + incident.incident_count : incident.incident_count %></h3>
-                                        <span>Number of Incidents</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-
-    <div class="tab-pane fade" id="vandalism" role="tabpanel" aria-labelledby="vandalism-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% groupedIncidents.filter(incident => incident.incident_type === 'vandalism').forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h3 style="margin-bottom: -5px;"><%= incident.incident_count < 10 ? '0' + incident.incident_count : incident.incident_count %></h3>
-                                        <span>Number of Incidents</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-
-    <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
-        <section id="incidents-results" style="margin-top: 20px; margin-left: 20px;">
-            <article>
-                <div class="cards-grid">
-                    <% groupedIncidents.filter(incident => incident.incident_type !== 'fire' && incident.incident_type !== 'violence' && incident.incident_type !== 'theft' && incident.incident_type !== 'vandalism').forEach(incident => { %>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="align-self-center">
-                                    <div class="map-container" style="position: relative; width: 100%; height: 200px;">
-                                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <iframe
-                                            width="100%"
-                                            height="100%"
-                                            frameborder="0"
-                                            style="border:0; display: none;"
-                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=<%= encodeURIComponent(incident.location) %>"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                    <h6 class="card-title" style="margin-top: 5px;"><%= incident.location %></h6>
-                                    <div class="">
-                                        <h3 style="margin-bottom: -5px;"><%= incident.incident_count < 10 ? '0' + incident.incident_count : incident.incident_count %></h3>
-                                        <span>Number of Incidents</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            </article>
-        </section>
-    </div>
-    
-    <!-- Repeat similar structure for violence, theft, vandalism, and other tabs -->
-</div>
-
-
-
-
-</main>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const iframes = document.querySelectorAll('iframe');
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentIndexDetailed = 4; 
+        const detailedIncidents = <%- JSON.stringify(detailedIncidents) %>; 
+        const detailedCardsContainer = document.getElementById('detailed-incident-cards');
+        const loadMoreBtnDetailed = document.getElementById('load-more-detailed');
 
-        iframes.forEach(iframe => {
-            iframe.onload = function() {
-                const mapContainer = iframe.closest('.map-container');
-                const preloader = mapContainer.querySelector('.map-preloader');
+        console.log(detailedIncidents); 
 
-                // Hide preloader and show iframe
-                preloader.style.display = 'none';
-                iframe.style.display = 'block';
-            };
+        loadMoreBtnDetailed.addEventListener('click', () => {
+            loadMoreBtnDetailed.innerHTML = '<i class="fa fa-spinner fa-spin"></i> processing...';
+            loadMoreBtnDetailed.disabled = true;
+
+            setTimeout(() => {
+                const newIncidents = detailedIncidents.slice(currentIndexDetailed, currentIndexDetailed + 4); 
+                console.log(newIncidents); 
+
+
+                newIncidents.forEach((incident) => {
+                    const cardHtml = `
+                        <div class="incident-card shadow-lg">
+                             <div class="map-container" style="position: relative; width: 100%; height: 200px;">
+                        <div class="map-preloader" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f3f3f3; display: flex; justify-content: center; align-items: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">loading...</span>
+                          </div>
+                        </div>
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          frameborder="0"
+                          style="border:0; display: none;"
+                                            src="https://www.gomaps.pro/maps/embed/v1/place?key=AlzaSydsurS3YqxGVdqaV4yrn1AD-8nu9OhpIUB&q=${encodeURIComponent(incident.location)}"
+
+                          allowfullscreen>
+                        </iframe>
+                      </div>
+                            <h3>Incident: ${incident.incident_type}</h3>
+                            <p>Location: ${incident.location}</p>
+                            <p>Time: ${incident.formatted_time}</p>
+                            <p>Date: ${incident.formatted_date}</p>
+                            ${incident.imageSrcs && incident.imageSrcs.length > 0 ? `
+                                <div class="incident-images">
+                                    ${incident.imageSrcs.map(src => `<img src="${src}" alt="Incident Image">`).join('')}
+                                </div>
+                            ` : ''}
+                            <p><img src='/images/profile-default.png' alt='default profile' style="width: 30px;height: 30px; border-radius: 50%" > ${incident.pseudo_name}</p>
+                        </div>
+                    `;
+
+                    detailedCardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+                });
+
+                currentIndexDetailed += 4; 
+                console.log(currentIndexDetailed);
+
+                loadMoreBtnDetailed.innerHTML = 'Load more';
+                loadMoreBtnDetailed.disabled = false;
+
+                if (currentIndexDetailed >= detailedIncidents.length) {
+                    loadMoreBtnDetailed.style.display = 'none';
+                }
+            }, 2000); 
         });
     });
 </script>
 
-<script src="/js/script.js"></script>
-<%- include('layouts/footer')%>
+<script>
+    // Activate Bootstrap 5 tooltips
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
 
-
+<%- include('layouts/footer') %>

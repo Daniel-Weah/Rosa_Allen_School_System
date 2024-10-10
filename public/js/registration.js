@@ -1,3 +1,5 @@
+// This is our registration js file
+
 function togglePasswordVisibility() {
  const passwordInput = document.getElementById('password');
  const toggleIcon = document.getElementById('toggleIcon');

@@ -9,7 +9,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.get("/registration", (req, res) => {
-  res.render("Registration");
+  res.render("signup");
 });
 
 router.post("/registration", upload.single("profile_picture"), (req, res) => {

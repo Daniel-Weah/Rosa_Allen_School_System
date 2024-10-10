@@ -1,97 +1,164 @@
-/* analysis.css */
-
-/* Base Styles */
-.analysis {
- text-align: center;
- margin-top: 7rem;
+#dashboard-head {
+    text-align: center;
+    margin-top: 3rem;
+    margin-left: -12pc;
 }
 
-.analysis h2 {
- text-transform: uppercase;
- font-family: 'Ubuntu', sans-serif;
- letter-spacing: 2px;
+#dashboard-head h2 {
+    text-transform: uppercase;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
-.analysis #text-analysis {
- margin-top: -15px;
+#search {
+    margin: 0 auto;
+    width: 70%;
+    height: 10vh;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.card-trend-container {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
- gap: 20px; /* Adjusted gap to prevent too much space */
- max-width: 1200px; /* Restrict the width of the incident cards container */
- margin: 0 auto;
+#incident-type-tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: -12pc;
+
 }
 
-.card-container {
- display: grid;
- grid-template-columns: 1fr;
- width: 100%; /* Remove fixed width to allow flexibility */
- padding: 1rem;
- margin-left: 14pc;
+#incident-type-tabs button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 0.875rem;
+    /* Smaller font size */
+    border-radius: 5px;
+    /* Optional: rounded corners */
+}
+
+#incident-type-tabs .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+#incident-type-tabs .btn-light {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    color: #000;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 20px; margin-left: -16pc;
 }
 
 .card {
- margin: 0 auto;
- border: none;
- width: 30rem;
- height: 12rem;
- color: white;
- border-radius: 15px;
- background-color: #007bff; /* Default background color, adjust for dark mode */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+    margin-right: 18px;
 }
 
-.trend-container {
- max-width: 400px; 
- background-color: #f8f9fa; /* Default background color, adjust for dark mode */
- border-right: 1px solid #ddd;
- padding: 1rem;
- margin-left: 15pc; 
- top: 20px; 
- position: sticky; 
- z-index: 999; 
- overflow-y: auto; 
+#card-profile {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
 }
 
-.trend-body {
- overflow-y: auto; 
- max-height: 700px; 
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.incident-card {
- margin-bottom: 1rem;
- width: 50px;
- color: black; /* Default text color, adjust for dark mode */
+.tooltip-wrapper .tooltip-box {
+    visibility: hidden;
+    width: 400px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    bottom: 125%;
+    /* Position above the text */
+    left: 50%;
+    margin-left: -100px;
+    /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1;
 }
 
-.incident-title {
- font-weight: bold;
+.tooltip-wrapper:hover .tooltip-box {
+    visibility: visible;
+    opacity: 1;
 }
 
-.incident-date {
- font-size: 0.85rem;
- color: #6c757d; /* Default text color, adjust for dark mode */
+.hover-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    /* The first column for the image, the second for the text */
+    gap: 20px;
+    /* Optional: adds space between the image and the text */
+    align-items: center;
+    /* Vertically align the image and text */
 }
 
-/* Dark Mode Styles */
-body.dark-mode .analysis {
- color: #fff;
+.hover-item img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-body.dark-mode .card {
- background-color: #343a40; /* Dark mode background color */
+.info {
+    display: flex;
+    flex-direction: column;
 }
 
-body.dark-mode .trend-container {
- background-color: #495057; /* Dark mode background color */
- border-right: 1px solid #6c757d; /* Adjust border color for dark mode */
+.info #description {
+ white-space: nowrap; 
+ overflow: hidden; 
+ text-overflow: ellipsis; 
+ max-width: 100%; 
+ display: block; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
 }
 
-body.dark-mode .incident-card {
- color: #fff; /* Dark mode text color */
+
+#name {
+    font-size: 16px;
+    font-weight: bold;
 }
 
-body.dark-mode .incident-date {
- color: #adb5bd; /* Light text color for dark mode */
+
+
+.tooltip-box div {
+    margin-top: 5px;
 }
+
+#images {
+    width: 80px;
+    height: 80px;
+    vertical-align: middle;
+    margin-top: 2rem;
+    margin-inline: 5px;
+}
+ /* Add any required CSS here */
+ .spinner-border {
+    display: none;
+    margin-left: 10px;
+  }
